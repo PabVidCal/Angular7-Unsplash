@@ -1,0 +1,63 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="#" (click)="goBack()" href="#"><strong>Galería de imágenes</strong></a>
+    <button class="navbar-toggler d-lg-none" type="button" (click)="isCollapsed = !isCollapsed"
+      [attr.aria-expanded]="!isCollapsed" aria-controls="navbarSupportedContent" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" [ngbCollapse]="isCollapsed">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <form [formGroup]="navbarForm" class="form-inline my-2 my-lg-0">
+            <div class="input-group">
+              <input formControlName="searchText" name="searchText" type="searchText" class="form-control"
+                placeholder="Busqueda de imágenes" (keydown)="onSearch($event, searchRequest.value)" #searchRequest>
+              <div class="input-group-append">
+                <button class="btn btn-secondary" (click)="onSearch($event, searchRequest.value)" type="button">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+<header *ngIf="isHeaderVisible" class="header-gradient" [style.background-image]="randomImage">
+  <div class='container head'>
+    <div class='row h-100 justify-content-center align-items-center'>
+      <div class='mx-auto col-sm-6 headline'>
+        <h2 class="headline text-center">Miles de imagenes a su disposición</h2>
+        <form [formGroup]="headerForm">
+          <div class="input-group">
+            <input formControlName="searchInputType" type="text" class="form-control" placeholder="Busqueda de imágenes"
+              (keydown)="onSearch($event, searchRequest.value)" #searchRequest>
+            <div class="input-group-append">
+              <button class="btn btn-secondary" (click)="onSearch($event, searchRequest.value)" type="button">
+                <i class="fa fa-search"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+<section *ngIf="!isHeaderVisible" class="gallery">
+  <div class="container-fluid">
+    <div infinite-scroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollThrottle]="throttle"
+      (scrolled)="onScrollDown()">
+      <div class="row itemsBlock">
+        <div *ngFor="let image of images; let i = index;"
+          class="col-md-3 col-sm-4 col-12 d-flex flex-column align-items-center justify-content-center">
+          <a href="#"><img [src]="image.urls.thumb" (click)="openLightBoxByIndex(i)" class="image-box"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
